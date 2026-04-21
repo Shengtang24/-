@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>可视化成果展示</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+      background: #f0f2f5;
+      color: #333;
+    }
+    header {
+      background: linear-gradient(135deg, #1a73e8 0%, #0d47a1 100%);
+      color: #fff;
+      padding: 2rem 1.5rem;
+      text-align: center;
+    }
+    header h1 { font-size: 2rem; margin-bottom: 0.5rem; }
+    header p  { font-size: 1rem; opacity: 0.85; }
+    main {
+      max-width: 1100px;
+      margin: 2rem auto;
+      padding: 0 1rem;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 1.5rem;
+    }
+    .card {
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+      padding: 1.5rem;
+    }
+    .card h2 {
+      font-size: 1.1rem;
+      margin-bottom: 1rem;
+      color: #1a73e8;
+      border-left: 4px solid #1a73e8;
+      padding-left: 0.6rem;
+    }
+    canvas { width: 100% !important; }
+    footer {
+      text-align: center;
+      padding: 2rem;
+      color: #888;
+      font-size: 0.85rem;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>📊 可视化成果展示</h1>
+  <p>通过 GitHub Pages 托管的项目数据可视化</p>
+</header>
+
+<main>
+  <!-- 柱状图 -->
+  <div class="card">
+    <h2>月度数据统计（柱状图）</h2>
+    <canvas id="barChart"></canvas>
+  </div>
+
+  <!-- 折线图 -->
+  <div class="card">
+    <h2>数据趋势分析（折线图）</h2>
+    <canvas id="lineChart"></canvas>
+  </div>
+
+  <!-- 饼图 -->
+  <div class="card">
+    <h2>数据占比分布（饼图）</h2>
+    <canvas id="pieChart"></canvas>
+  </div>
+
+  <!-- 雷达图 -->
+  <div class="card">
+    <h2>多维度评估（雷达图）</h2>
+    <canvas id="radarChart"></canvas>
+  </div>
+</main>
+
+<footer>
+  <p>Powered by <a href="https://www.chartjs.org/" target="_blank">Chart.js</a> · Hosted on GitHub Pages</p>
+</footer>
+
+<script>
+  const months = ['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月'];
+  const palette = ['#1a73e8','#34a853','#fbbc04','#ea4335','#9c27b0','#00bcd4'];
+
+  // 柱状图
+  new Chart(document.getElementById('barChart'), {
+    type: 'bar',
+    data: {
+      labels: months,
+      datasets: [{
+        label: '数量',
+        data: [65, 78, 90, 81, 56, 95, 110, 103, 88, 76, 92, 120],
+        backgroundColor: palette[0] + 'cc',
+        borderColor: palette[0],
+        borderWidth: 1,
+        borderRadius: 6
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: { legend: { display: false } },
+      scales: { y: { beginAtZero: true } }
+    }
+  });
+
+  // 折线图
+  new Chart(document.getElementById('lineChart'), {
+    type: 'line',
+    data: {
+      labels: months,
+      datasets: [
+        {
+          label: '指标 A',
+          data: [30, 45, 60, 55, 70, 85, 80, 95, 90, 105, 100, 115],
+          borderColor: palette[1],
+          backgroundColor: palette[1] + '22',
+          tension: 0.4,
+          fill: true
+        },
+        {
+          label: '指标 B',
+          data: [20, 35, 45, 50, 60, 70, 65, 75, 80, 85, 95, 100],
+          borderColor: palette[3],
+          backgroundColor: palette[3] + '22',
+          tension: 0.4,
+          fill: true
+        }
+      ]
+    },
+    options: { responsive: true, plugins: { legend: { position: 'bottom' } } }
+  });
+
+  // 饼图
+  new Chart(document.getElementById('pieChart'), {
+    type: 'doughnut',
+    data: {
+      labels: ['类别 A','类别 B','类别 C','类别 D','类别 E'],
+      datasets: [{
+        data: [30, 25, 20, 15, 10],
+        backgroundColor: palette,
+        hoverOffset: 8
+      }]
+    },
+    options: { responsive: true, plugins: { legend: { position: 'bottom' } } }
+  });
+
+  // 雷达图
+  new Chart(document.getElementById('radarChart'), {
+    type: 'radar',
+    data: {
+      labels: ['准确率','召回率','F1 分数','精确率','AUC','速度'],
+      datasets: [
+        {
+          label: '模型 A',
+          data: [85, 78, 82, 80, 88, 70],
+          borderColor: palette[0],
+          backgroundColor: palette[0] + '33'
+        },
+        {
+          label: '模型 B',
+          data: [72, 90, 80, 75, 82, 88],
+          borderColor: palette[1],
+          backgroundColor: palette[1] + '33'
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      scales: { r: { beginAtZero: true, max: 100 } },
+      plugins: { legend: { position: 'bottom' } }
+    }
+  });
+</script>
+</body>
+</html>
